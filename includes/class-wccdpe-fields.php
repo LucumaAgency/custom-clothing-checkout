@@ -1,0 +1,264 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+class WCCDPE_Fields {
+
+    public function __construct() {
+        // Add custom fields to billing section
+        add_filter( 'woocommerce_checkout_fields', [ $this, 'customize_checkout_fields' ], 20 );
+        // Render additional dynamic fields after billing
+        add_action( 'woocommerce_after_checkout_billing_form', [ $this, 'render_delivery_fields' ] );
+        // Info text at the end
+        add_action( 'woocommerce_checkout_after_customer_details', [ $this, 'render_info_text' ] );
+    }
+
+    /**
+     * Customize billing fields: add email/contacto and tipo_entrega.
+     */
+    public function customize_checkout_fields( $fields ) {
+        // Ensure email is first
+        if ( isset( $fields['billing']['billing_email'] ) ) {
+            $fields['billing']['billing_email']['priority'] = 5;
+            $fields['billing']['billing_email']['label'] = 'Email o número de contacto';
+            $fields['billing']['billing_email']['placeholder'] = 'correo@ejemplo.com o 9XXXXXXXX';
+        }
+
+        // Add tipo_entrega selector right after core billing fields
+        $fields['billing']['billing_tipo_entrega'] = [
+            'type'     => 'select',
+            'label'    => 'Tipo de entrega',
+            'required' => true,
+            'class'    => [ 'form-row-wide', 'wccdpe-tipo-entrega-field' ],
+            'options'  => WCCDPE_Data::get_delivery_types(),
+            'priority' => 200,
+        ];
+
+        return $fields;
+    }
+
+    /**
+     * Render all conditional delivery fields (hidden by default, JS controls visibility).
+     */
+    public function render_delivery_fields( $checkout ) {
+        echo '<div id="wccdpe-delivery-fields">';
+
+        // ── Lima fields (24h & 48h) ──
+        echo '<div class="wccdpe-group" data-show="lima_24h,lima_48h" style="display:none;">';
+
+        woocommerce_form_field( 'billing_lima_distrito', [
+            'type'     => 'select',
+            'label'    => 'Distrito de Lima',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => array_merge(
+                [ '' => '— Selecciona distrito —' ],
+                array_combine(
+                    array_keys( WCCDPE_Data::get_lima_districts_with_prices() ),
+                    array_keys( WCCDPE_Data::get_lima_districts_with_prices() )
+                )
+            ),
+        ], $checkout->get_value( 'billing_lima_distrito' ) );
+
+        echo '<p class="wccdpe-distrito-price" style="display:none;"></p>';
+
+        woocommerce_form_field( 'billing_direccion', [
+            'type'        => 'text',
+            'label'       => 'Dirección',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Av. / Jr. / Calle y número',
+        ], $checkout->get_value( 'billing_direccion' ) );
+
+        woocommerce_form_field( 'billing_referencia', [
+            'type'        => 'text',
+            'label'       => 'Referencia',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Cerca de...',
+        ], $checkout->get_value( 'billing_referencia' ) );
+
+        woocommerce_form_field( 'billing_vivienda', [
+            'type'    => 'select',
+            'label'   => 'Tipo de vivienda',
+            'required'=> false,
+            'class'   => [ 'form-row-wide' ],
+            'options' => [
+                ''           => '— Selecciona —',
+                'casa'       => 'Casa',
+                'apartamento'=> 'Apartamento',
+                'interior'   => 'Interior / Oficina',
+            ],
+        ], $checkout->get_value( 'billing_vivienda' ) );
+
+        echo '</div>'; // lima
+
+        // ── Provincia Shalom ──
+        echo '<div class="wccdpe-group" data-show="provincia_shalom" style="display:none;">';
+
+        // UBIGEO selects rendered empty — JS populates them
+        woocommerce_form_field( 'billing_departamento', [
+            'type'     => 'select',
+            'label'    => 'Departamento',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona departamento —' ],
+        ], $checkout->get_value( 'billing_departamento' ) );
+
+        woocommerce_form_field( 'billing_provincia', [
+            'type'     => 'select',
+            'label'    => 'Provincia',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona provincia —' ],
+        ], $checkout->get_value( 'billing_provincia' ) );
+
+        woocommerce_form_field( 'billing_distrito_prov', [
+            'type'     => 'select',
+            'label'    => 'Distrito',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona distrito —' ],
+        ], $checkout->get_value( 'billing_distrito_prov' ) );
+
+        woocommerce_form_field( 'billing_agencia_shalom', [
+            'type'        => 'text',
+            'label'       => 'Nombre de Agencia Shalom',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Ej: Agencia Shalom Trujillo Centro',
+        ], $checkout->get_value( 'billing_agencia_shalom' ) );
+
+        echo '</div>';
+
+        // ── Provincia Olva ──
+        echo '<div class="wccdpe-group" data-show="provincia_olva" style="display:none;">';
+
+        woocommerce_form_field( 'billing_olva_departamento', [
+            'type'     => 'select',
+            'label'    => 'Departamento',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona departamento —' ],
+        ], $checkout->get_value( 'billing_olva_departamento' ) );
+
+        woocommerce_form_field( 'billing_olva_provincia', [
+            'type'     => 'select',
+            'label'    => 'Provincia',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona provincia —' ],
+        ], $checkout->get_value( 'billing_olva_provincia' ) );
+
+        woocommerce_form_field( 'billing_olva_distrito', [
+            'type'     => 'select',
+            'label'    => 'Distrito',
+            'required' => false,
+            'class'    => [ 'form-row-wide' ],
+            'options'  => [ '' => '— Selecciona distrito —' ],
+        ], $checkout->get_value( 'billing_olva_distrito' ) );
+
+        woocommerce_form_field( 'billing_olva_sub_tipo', [
+            'type'    => 'radio',
+            'label'   => 'Tipo de recepción',
+            'required'=> false,
+            'class'   => [ 'form-row-wide', 'wccdpe-radio-group' ],
+            'options' => [
+                'domicilio' => 'Envío a domicilio',
+                'agencia'   => 'Recojo en agencia Olva',
+            ],
+        ], $checkout->get_value( 'billing_olva_sub_tipo' ) );
+
+        // Domicilio sub-fields
+        echo '<div class="wccdpe-olva-domicilio" style="display:none;">';
+
+        woocommerce_form_field( 'billing_olva_direccion', [
+            'type'        => 'text',
+            'label'       => 'Dirección',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Av. / Jr. / Calle y número',
+        ], $checkout->get_value( 'billing_olva_direccion' ) );
+
+        woocommerce_form_field( 'billing_olva_referencia', [
+            'type'        => 'text',
+            'label'       => 'Referencia',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Cerca de...',
+        ], $checkout->get_value( 'billing_olva_referencia' ) );
+
+        echo '</div>';
+
+        // Agencia sub-field
+        echo '<div class="wccdpe-olva-agencia" style="display:none;">';
+
+        woocommerce_form_field( 'billing_olva_agencia_nombre', [
+            'type'        => 'text',
+            'label'       => 'Nombre de Agencia Olva',
+            'required'    => false,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Ej: Olva Courier Chiclayo',
+        ], $checkout->get_value( 'billing_olva_agencia_nombre' ) );
+
+        echo '</div>';
+
+        echo '</div>'; // olva
+
+        // ── Recojo en Tienda ──
+        echo '<div class="wccdpe-group" data-show="recojo_tienda" style="display:none;">';
+
+        woocommerce_form_field( 'billing_tienda_marca', [
+            'type'    => 'radio',
+            'label'   => 'Selecciona la marca',
+            'required'=> false,
+            'class'   => [ 'form-row-wide', 'wccdpe-radio-group' ],
+            'options' => [
+                'pixie'  => 'Pixie',
+                'camill' => 'Camill',
+            ],
+        ], $checkout->get_value( 'billing_tienda_marca' ) );
+
+        // Tienda info blocks
+        $tiendas = WCCDPE_Data::get_tiendas();
+        foreach ( $tiendas as $key => $data ) {
+            echo '<div class="wccdpe-tienda-info" data-marca="' . esc_attr( $key ) . '" style="display:none;">';
+            echo '<h4>' . esc_html( $data['label'] ) . '</h4>';
+            echo '<ul>';
+            foreach ( $data['locations'] as $loc ) {
+                echo '<li>' . esc_html( $loc ) . '</li>';
+            }
+            echo '</ul>';
+            echo '</div>';
+        }
+
+        woocommerce_form_field( 'billing_tienda_especifica', [
+            'type'        => 'select',
+            'label'       => 'Tienda específica para recojo',
+            'required'    => false,
+            'class'       => [ 'form-row-wide', 'wccdpe-tienda-select' ],
+            'options'     => [ '' => '— Selecciona tienda —' ],
+        ], $checkout->get_value( 'billing_tienda_especifica' ) );
+
+        echo '<p class="wccdpe-recojo-info">';
+        echo '<strong>Tiempo estimado:</strong> Listo en 2-4 días.<br>';
+        echo '<strong>Horario:</strong> 10:30 am a 7:30 pm – Lunes a Sábados.';
+        echo '</p>';
+
+        echo '</div>'; // recojo
+
+        echo '</div>'; // #wccdpe-delivery-fields
+    }
+
+    /**
+     * Fixed informational text at checkout bottom.
+     */
+    public function render_info_text() {
+        echo '<div class="wccdpe-info-text">';
+        echo '<p>Los envíos se procesan 24 horas después de confirmada la compra. ';
+        echo 'Tener en cuenta este plazo al calcular el tiempo de entrega según el tipo de envío seleccionado.</p>';
+        echo '<p>Realizamos las distribuciones de lunes a sábado.</p>';
+        echo '</div>';
+    }
+}
+
+new WCCDPE_Fields();

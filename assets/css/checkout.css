@@ -1,0 +1,91 @@
+/* ── WC Custom Checkout Delivery PE ── */
+
+#wccdpe-delivery-fields {
+    margin-top: 15px;
+}
+
+#wccdpe-delivery-fields .wccdpe-group {
+    padding: 15px 0;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* Radio groups styling */
+.wccdpe-radio-group label {
+    display: block;
+    padding: 8px 0;
+    cursor: pointer;
+}
+
+.wccdpe-radio-group input[type="radio"] {
+    margin-right: 8px;
+}
+
+/* District price notice */
+.wccdpe-distrito-price {
+    background: #f7f6f7;
+    padding: 10px 15px;
+    border-left: 3px solid #7f54b3;
+    margin: 10px 0;
+    font-weight: 600;
+}
+
+/* Store info blocks */
+.wccdpe-tienda-info {
+    background: #f9f9f9;
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.wccdpe-tienda-info h4 {
+    margin: 0 0 8px;
+    font-size: 15px;
+}
+
+.wccdpe-tienda-info ul {
+    margin: 0;
+    padding-left: 18px;
+    list-style: disc;
+}
+
+.wccdpe-tienda-info li {
+    padding: 3px 0;
+    font-size: 13px;
+}
+
+/* Pickup info */
+.wccdpe-recojo-info {
+    background: #e8f5e9;
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: 12px 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Bottom info text */
+.wccdpe-info-text {
+    background: #fff8e1;
+    border-left: 3px solid #ffc107;
+    padding: 12px 16px;
+    margin: 20px 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.wccdpe-info-text p {
+    margin: 0 0 6px;
+}
+
+.wccdpe-info-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Tipo entrega selector emphasis */
+.wccdpe-tipo-entrega-field {
+    margin-top: 10px;
+}
+
+.wccdpe-tipo-entrega-field select {
+    font-weight: 600;
+}
