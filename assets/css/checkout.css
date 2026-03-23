@@ -20,6 +20,22 @@
     margin-right: 8px;
 }
 
+/* Inline radio: hide title label, each option = one row (input + text on same line) */
+.wccdpe-radio-inline > label:first-child {
+    display: none;
+}
+
+.wccdpe-radio-inline input[type="radio"],
+.wccdpe-radio-inline label {
+    display: inline;
+    vertical-align: middle;
+}
+
+.wccdpe-radio-inline label::after {
+    content: '';
+    display: block;
+}
+
 /* District price notice */
 .wccdpe-distrito-price {
     background: #f7f6f7;

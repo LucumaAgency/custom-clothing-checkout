@@ -159,9 +159,9 @@ class WCCDPE_Fields {
 
         woocommerce_form_field( 'billing_olva_sub_tipo', [
             'type'    => 'radio',
-            'label'   => 'Tipo de recepción',
+            'label'   => '&nbsp;',
             'required'=> false,
-            'class'   => [ 'form-row-wide', 'wccdpe-radio-group' ],
+            'class'   => [ 'form-row-wide', 'wccdpe-radio-group', 'wccdpe-radio-inline' ],
             'options' => [
                 'domicilio' => 'Envío a domicilio',
                 'agencia'   => 'Recojo en agencia Olva',
