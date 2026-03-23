@@ -7,8 +7,6 @@
 
     var limaDistricts = wccdpe_data.lima_districts || {};
     var ubigeo = wccdpe_data.ubigeo || {};
-    var tiendas = wccdpe_data.tiendas || {};
-
     /**
      * Show/hide delivery groups based on selected tipo_entrega.
      */
@@ -81,23 +79,6 @@
      */
     function triggerUpdateCheckout() {
         $(document.body).trigger('update_checkout');
-    }
-
-    /**
-     * Populate tienda select based on marca selection.
-     */
-    function updateTiendaSelect(marca) {
-        var $select = $('#billing_tienda_especifica');
-        $select.empty().append('<option value="">— Selecciona tienda —</option>');
-
-        // Show/hide tienda info blocks
-        $('.wccdpe-tienda-info').hide();
-        if (marca && tiendas[marca]) {
-            $('.wccdpe-tienda-info[data-marca="' + marca + '"]').slideDown(200);
-            $.each(tiendas[marca].locations, function (i, loc) {
-                $select.append('<option value="' + $('<span>').text(loc).html() + '">' + $('<span>').text(loc).html() + '</option>');
-            });
-        }
     }
 
     // ── Event Handlers ──
@@ -188,10 +169,8 @@
         }
     });
 
-    // Recojo: Marca selection
-    $(document).on('change', 'input[name="billing_tienda_marca"]', function () {
-        var marca = $(this).val();
-        updateTiendaSelect(marca);
+    // Recojo: Tienda selection
+    $(document).on('change', '#billing_tienda_especifica', function () {
         triggerUpdateCheckout();
     });
 

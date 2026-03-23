@@ -50,8 +50,8 @@ class WCCDPE_Validation {
                 break;
 
             case 'recojo_tienda':
-                if ( empty( $_POST['billing_tienda_marca'] ) ) {
-                    wc_add_notice( 'Por favor selecciona la marca de tienda para recojo.', 'error' );
+                if ( empty( $_POST['billing_tienda_especifica'] ) ) {
+                    wc_add_notice( 'Por favor selecciona una tienda para recojo.', 'error' );
                 }
                 break;
         }

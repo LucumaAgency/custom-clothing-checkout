@@ -23,7 +23,6 @@ class WCCDPE_Order_Meta {
         'billing_olva_direccion',
         'billing_olva_referencia',
         'billing_olva_agencia_nombre',
-        'billing_tienda_marca',
         'billing_tienda_especifica',
     ];
 
@@ -76,8 +75,7 @@ class WCCDPE_Order_Meta {
             '_billing_olva_direccion'       => 'Dirección (Olva)',
             '_billing_olva_referencia'      => 'Referencia (Olva)',
             '_billing_olva_agencia_nombre'  => 'Agencia Olva',
-            '_billing_tienda_marca'         => 'Marca (Recojo)',
-            '_billing_tienda_especifica'    => 'Tienda específica',
+            '_billing_tienda_especifica'    => 'Tienda de recojo',
         ];
 
         foreach ( $display_fields as $meta_key => $label ) {
@@ -111,7 +109,7 @@ class WCCDPE_Order_Meta {
             'lima_48h'          => [ '_billing_lima_distrito' => 'Distrito', '_billing_direccion' => 'Dirección', '_billing_referencia' => 'Referencia' ],
             'provincia_shalom'  => [ '_billing_departamento' => 'Departamento', '_billing_provincia' => 'Provincia', '_billing_distrito_prov' => 'Distrito', '_billing_agencia_shalom' => 'Agencia Shalom' ],
             'provincia_olva'    => [ '_billing_olva_departamento' => 'Departamento', '_billing_olva_provincia' => 'Provincia', '_billing_olva_distrito' => 'Distrito', '_billing_olva_sub_tipo' => 'Tipo recepción', '_billing_olva_direccion' => 'Dirección', '_billing_olva_agencia_nombre' => 'Agencia Olva' ],
-            'recojo_tienda'     => [ '_billing_tienda_marca' => 'Marca', '_billing_tienda_especifica' => 'Tienda' ],
+            'recojo_tienda'     => [ '_billing_tienda_especifica' => 'Tienda de recojo' ],
         ];
 
         if ( isset( $conditional_meta[ $tipo ] ) ) {

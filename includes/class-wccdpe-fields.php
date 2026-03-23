@@ -207,36 +207,18 @@ class WCCDPE_Fields {
         // ── Recojo en Tienda ──
         echo '<div class="wccdpe-group" data-show="recojo_tienda" style="display:none;">';
 
-        woocommerce_form_field( 'billing_tienda_marca', [
-            'type'    => 'radio',
-            'label'   => 'Selecciona la marca',
-            'required'=> false,
-            'class'   => [ 'form-row-wide', 'wccdpe-radio-group' ],
-            'options' => [
-                'pixie'  => 'Pixie',
-                'camill' => 'Camill',
-            ],
-        ], $checkout->get_value( 'billing_tienda_marca' ) );
-
-        // Tienda info blocks
         $tiendas = WCCDPE_Data::get_tiendas();
-        foreach ( $tiendas as $key => $data ) {
-            echo '<div class="wccdpe-tienda-info" data-marca="' . esc_attr( $key ) . '" style="display:none;">';
-            echo '<h4>' . esc_html( $data['label'] ) . '</h4>';
-            echo '<ul>';
-            foreach ( $data['locations'] as $loc ) {
-                echo '<li>' . esc_html( $loc ) . '</li>';
-            }
-            echo '</ul>';
-            echo '</div>';
+        $tienda_options = [ '' => '— Selecciona tienda —' ];
+        foreach ( $tiendas as $loc ) {
+            $tienda_options[ $loc ] = $loc;
         }
 
         woocommerce_form_field( 'billing_tienda_especifica', [
             'type'        => 'select',
-            'label'       => 'Tienda específica para recojo',
+            'label'       => 'Selecciona la tienda para recojo',
             'required'    => false,
             'class'       => [ 'form-row-wide', 'wccdpe-tienda-select' ],
-            'options'     => [ '' => '— Selecciona tienda —' ],
+            'options'     => $tienda_options,
         ], $checkout->get_value( 'billing_tienda_especifica' ) );
 
         echo '<p class="wccdpe-recojo-info">';
