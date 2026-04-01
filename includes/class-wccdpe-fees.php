@@ -56,7 +56,7 @@ class WCCDPE_Fees {
 
             case 'contraentrega_shalom':
                 $fee = 0;
-                $label = 'Contra entrega Shalom (Gratis)';
+                $label = 'Provincia – Shalom (contraentrega)';
                 break;
 
             case 'recojo_tienda':
