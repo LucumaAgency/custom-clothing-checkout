@@ -67,12 +67,22 @@ class WCCDPE_Data {
      * Departamento => Provincia => [Distritos]
      */
     public static function get_ubigeo() {
+        static $cache = null;
+        if ( $cache !== null ) {
+            return $cache;
+        }
+
         $file = WCCDPE_PLUGIN_DIR . 'includes/data/ubigeo.json';
         if ( file_exists( $file ) ) {
             $json = file_get_contents( $file );
-            return json_decode( $json, true );
+            $cache = json_decode( $json, true );
+            if ( ! is_array( $cache ) ) {
+                $cache = [];
+            }
+            return $cache;
         }
-        return [];
+        $cache = [];
+        return $cache;
     }
 
     /**

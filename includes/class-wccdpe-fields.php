@@ -23,7 +23,18 @@ class WCCDPE_Fields {
             $fields['billing']['billing_email']['placeholder'] = 'correo@ejemplo.com o 9XXXXXXXX';
         }
 
-        // Add tipo_entrega selector right after core billing fields
+        // Add DNI field
+        $fields['billing']['billing_dni'] = [
+            'type'        => 'text',
+            'label'       => 'DNI',
+            'required'    => true,
+            'class'       => [ 'form-row-wide' ],
+            'placeholder' => 'Número de documento',
+            'priority'    => 195,
+            'maxlength'   => 8,
+        ];
+
+        // Add tipo_entrega selector right after DNI
         $fields['billing']['billing_tipo_entrega'] = [
             'type'     => 'select',
             'label'    => 'Tipo de entrega',
@@ -40,6 +51,7 @@ class WCCDPE_Fields {
      * Render all conditional delivery fields (hidden by default, JS controls visibility).
      */
     public function render_delivery_fields( $checkout ) {
+        wp_nonce_field( 'wccdpe_checkout', 'wccdpe_nonce' );
         echo '<div id="wccdpe-delivery-fields">';
 
         // ── Lima fields (24h & 48h) ──

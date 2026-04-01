@@ -7,6 +7,7 @@ class WCCDPE_Order_Meta {
      * All custom field keys we may save.
      */
     private $meta_fields = [
+        'billing_dni',
         'billing_tipo_entrega',
         'billing_lima_distrito',
         'billing_direccion',
@@ -36,9 +37,13 @@ class WCCDPE_Order_Meta {
      * Save all relevant fields to order meta.
      */
     public function save_meta( $order_id ) {
+        if ( ! isset( $_POST['wccdpe_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wccdpe_nonce'] ) ), 'wccdpe_checkout' ) ) {
+            return;
+        }
+
         foreach ( $this->meta_fields as $key ) {
             if ( isset( $_POST[ $key ] ) && $_POST[ $key ] !== '' ) {
-                update_post_meta( $order_id, '_' . $key, sanitize_text_field( $_POST[ $key ] ) );
+                update_post_meta( $order_id, '_' . $key, sanitize_text_field( wp_unslash( $_POST[ $key ] ) ) );
             }
         }
     }
@@ -58,6 +63,11 @@ class WCCDPE_Order_Meta {
         echo '<div class="wccdpe-admin-meta">';
         echo '<h3>Datos de Entrega Personalizado</h3>';
         echo '<p><strong>Tipo de entrega:</strong> ' . esc_html( $tipo_label ) . '</p>';
+
+        $dni = get_post_meta( $order_id, '_billing_dni', true );
+        if ( $dni ) {
+            echo '<p><strong>DNI:</strong> ' . esc_html( $dni ) . '</p>';
+        }
 
         $display_fields = [
             '_billing_lima_distrito'        => 'Distrito (Lima)',
@@ -98,6 +108,14 @@ class WCCDPE_Order_Meta {
         if ( ! $tipo ) return $fields;
 
         $labels = WCCDPE_Data::get_delivery_types();
+        $dni = get_post_meta( $order_id, '_billing_dni', true );
+        if ( $dni ) {
+            $fields['billing_dni'] = [
+                'label' => 'DNI',
+                'value' => $dni,
+            ];
+        }
+
         $fields['tipo_entrega'] = [
             'label' => 'Tipo de entrega',
             'value' => isset( $labels[ $tipo ] ) ? $labels[ $tipo ] : $tipo,

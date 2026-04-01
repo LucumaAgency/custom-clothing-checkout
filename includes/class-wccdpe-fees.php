@@ -23,6 +23,11 @@ class WCCDPE_Fees {
         $fee = 0;
         $label = 'Envío';
 
+        $valid_types = array_keys( WCCDPE_Data::get_delivery_types() );
+        if ( ! in_array( $tipo, $valid_types, true ) ) {
+            return;
+        }
+
         switch ( $tipo ) {
             case 'lima_24h':
                 $distrito = WC()->session->get( 'wccdpe_lima_distrito' );
@@ -30,7 +35,7 @@ class WCCDPE_Fees {
                 $label = 'Delivery Lima 24h';
                 if ( $distrito && isset( $prices[ $distrito ] ) ) {
                     $fee = $prices[ $distrito ];
-                    $label .= ' – ' . $distrito;
+                    $label .= ' – ' . esc_html( $distrito );
                 }
                 break;
 
@@ -55,9 +60,7 @@ class WCCDPE_Fees {
                 break;
         }
 
-        if ( $tipo ) {
-            $cart->add_fee( $label, $fee, false );
-        }
+        $cart->add_fee( $label, $fee, false );
     }
 }
 
