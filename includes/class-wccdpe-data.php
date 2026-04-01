@@ -105,6 +105,7 @@ class WCCDPE_Data {
             'lima_48h'              => 'Lima – Delivery 48 horas',
             'provincia_shalom'     => 'Provincia – Shalom (s/15)',
             'provincia_olva'       => 'Provincia – Olva Courier (s/15)',
+            'contraentrega_shalom' => 'Contra entrega Shalom (Gratis)',
             'recojo_tienda'        => 'Recojo en Tienda (Gratis)',
         ];
     }

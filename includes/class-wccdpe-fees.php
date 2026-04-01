@@ -54,6 +54,11 @@ class WCCDPE_Fees {
                 $label = 'Envío Provincia – Olva Courier';
                 break;
 
+            case 'contraentrega_shalom':
+                $fee = 0;
+                $label = 'Contra entrega Shalom (Gratis)';
+                break;
+
             case 'recojo_tienda':
                 $fee = 0;
                 $label = 'Recojo en Tienda (Gratis)';

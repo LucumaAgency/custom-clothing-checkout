@@ -49,6 +49,7 @@ class WCCDPE_Validation {
                 break;
 
             case 'provincia_shalom':
+            case 'contraentrega_shalom':
                 $depto = isset( $_POST['billing_departamento'] ) ? sanitize_text_field( wp_unslash( $_POST['billing_departamento'] ) ) : '';
                 if ( empty( $depto ) ) {
                     wc_add_notice( 'Por favor selecciona un departamento.', 'error' );

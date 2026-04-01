@@ -45,6 +45,16 @@
     font-weight: 600;
 }
 
+/* Contra entrega info notice */
+.wccdpe-contraentrega-info {
+    background: #fff3e0;
+    padding: 10px 15px;
+    border-left: 3px solid #ff9800;
+    margin: 10px 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 /* Store info blocks */
 .wccdpe-tienda-info {
     background: #f9f9f9;

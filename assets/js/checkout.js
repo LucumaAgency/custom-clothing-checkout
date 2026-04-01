@@ -89,6 +89,13 @@
         toggleGroups(tipo);
         updateDistrictPrice();
         triggerUpdateCheckout();
+
+        // Show/hide contra entrega info note
+        if (tipo === 'contraentrega_shalom') {
+            $('.wccdpe-contraentrega-info').slideDown(200);
+        } else {
+            $('.wccdpe-contraentrega-info').slideUp(200);
+        }
     });
 
     // Lima district change

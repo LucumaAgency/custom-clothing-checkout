@@ -125,7 +125,8 @@ class WCCDPE_Order_Meta {
         $conditional_meta = [
             'lima_24h'          => [ '_billing_lima_distrito' => 'Distrito', '_billing_direccion' => 'Dirección', '_billing_referencia' => 'Referencia' ],
             'lima_48h'          => [ '_billing_lima_distrito' => 'Distrito', '_billing_direccion' => 'Dirección', '_billing_referencia' => 'Referencia' ],
-            'provincia_shalom'  => [ '_billing_departamento' => 'Departamento', '_billing_provincia' => 'Provincia', '_billing_distrito_prov' => 'Distrito', '_billing_agencia_shalom' => 'Agencia Shalom' ],
+            'provincia_shalom'      => [ '_billing_departamento' => 'Departamento', '_billing_provincia' => 'Provincia', '_billing_distrito_prov' => 'Distrito', '_billing_agencia_shalom' => 'Agencia Shalom' ],
+            'contraentrega_shalom'  => [ '_billing_departamento' => 'Departamento', '_billing_provincia' => 'Provincia', '_billing_distrito_prov' => 'Distrito', '_billing_agencia_shalom' => 'Agencia Shalom' ],
             'provincia_olva'    => [ '_billing_olva_departamento' => 'Departamento', '_billing_olva_provincia' => 'Provincia', '_billing_olva_distrito' => 'Distrito', '_billing_olva_sub_tipo' => 'Tipo recepción', '_billing_olva_direccion' => 'Dirección', '_billing_olva_agencia_nombre' => 'Agencia Olva' ],
             'recojo_tienda'     => [ '_billing_tienda_especifica' => 'Tienda de recojo' ],
         ];

@@ -105,7 +105,7 @@ class WCCDPE_Fields {
         echo '</div>'; // lima
 
         // ── Provincia Shalom ──
-        echo '<div class="wccdpe-group" data-show="provincia_shalom" style="display:none;">';
+        echo '<div class="wccdpe-group" data-show="provincia_shalom,contraentrega_shalom" style="display:none;">';
 
         // UBIGEO selects rendered empty — JS populates them
         woocommerce_form_field( 'billing_departamento', [
@@ -139,6 +139,10 @@ class WCCDPE_Fields {
             'class'       => [ 'form-row-wide' ],
             'placeholder' => 'Ej: Agencia Shalom Trujillo Centro',
         ], $checkout->get_value( 'billing_agencia_shalom' ) );
+
+        echo '<p class="wccdpe-contraentrega-info" style="display:none;">';
+        echo '<strong>Contra entrega:</strong> El pago del producto se realiza directamente en la agencia Shalom al momento de recogerlo. El envío es gratuito.';
+        echo '</p>';
 
         echo '</div>';
 
